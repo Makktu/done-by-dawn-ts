@@ -1,40 +1,54 @@
 const displayArea = document.getElementById('display') as HTMLElement;
-const inputBox = document.getElementById('input-box') as HTMLElement;
-const submitBtn = document.getElementById('submit-btn') as HTMLElement;
+const taskForm = document.getElementById('task-form') as HTMLFormElement;
+const taskInput = document.getElementById('taskInput') as HTMLInputElement;
 
 setupEventListeners();
 
-let todos = [
-  {
-    task: 'Wash dishes',
-    done: false,
-  },
-  {
-    task: 'Clean room',
-    done: false,
-  },
-  {
-    task: 'Write books',
-    done: true,
-  },
+const todos: Array<{ task: string; done: boolean }> = [
+  { task: 'Wash dishes', done: false },
+  { task: 'Clean room', done: false },
+  { task: 'Write books', done: true },
 ];
+let currentTasks: number = todos.length;
 
-let displayContent: string = ``;
-let doneOrNot: string = '';
+displayTasks(todos);
 
-todos.forEach((todo) => {
-  if (todo) {
-    doneOrNot = todo.done ? 'Yes' : 'No';
-    displayContent += `<span id="boldtext">Task:</span> ${todo.task}<br /><span id="boldtext">Completed:</span> ${doneOrNot}<br />--------------------<br />`;
-  }
-});
+function displayTasks(todos: Array<{ task: string; done: boolean }>) {
+  let displayContent: string = ``;
+  let doneOrNot: string = '';
 
-displayArea.innerHTML = displayContent;
+  todos.forEach((todo) => {
+    if (todo) {
+      doneOrNot = todo.done ? 'Yes' : 'No';
+      displayContent += `<span id="boldtext">Task:</span> ${todo.task}<br /><span id="boldtext">Completed:</span> ${doneOrNot}<br />--------------------<br />`;
+    }
+
+    displayArea.innerHTML = displayContent;
+  });
+}
 
 function setupEventListeners(): void {
-  submitBtn.addEventListener('click', () => {
-    console.log('clicked');
-    let inputValue: string = inputBox.textContent; // ! 1st fix!
-    console.log(inputValue);
+  // * the overall form listener & logic
+  taskForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    let newTask: string = taskInput.value; // ! 1st fix!
+
+    if (currentTasks + 1 > 10) {
+      alert('TASK LIMIT REACHED');
+      return;
+    }
+
+    todos.push({
+      task: newTask,
+      done: false,
+    });
+
+    displayTasks(todos);
+
+    taskInput.value = '';
+
+    currentTasks += 1;
+    console.log(currentTasks);
   });
 }

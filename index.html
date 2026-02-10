@@ -9,12 +9,16 @@
   <body>
     <h1>DONE BY DAWN</h1>
     <div id="display"></div>
-    <div id="input">
-      <input id="input-box" />
-    </div>
-    <div id="submit-btn-area">
-      <button id="submit-btn">SUBMIT</button>
-    </div>
+    <form class="task-form" id="task-form">
+      <input
+        type="text"
+        class="task-input"
+        id="taskInput"
+        placeholder="Add a new task..."
+        autocomplete="off"
+      />
+      <button type="submit" class="btn btn-primary">Add</button>
+    </form>
     <script src="dist/index.js" type="module" defer></script>
   </body>
 </html>
