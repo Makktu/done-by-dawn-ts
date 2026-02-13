@@ -1,4 +1,4 @@
-const displayArea = document.getElementById('display') as HTMLElement;
+const displayArea = document.getElementById('display') as HTMLDivElement;
 const taskForm = document.getElementById('task-form') as HTMLFormElement;
 const taskInput = document.getElementById('taskInput') as HTMLInputElement;
 
@@ -20,7 +20,7 @@ function displayTasks(todos: Array<{ task: string; done: boolean }>) {
   todos.forEach((todo) => {
     if (todo) {
       doneOrNot = todo.done ? 'Yes' : 'No';
-      displayContent += `<span id="boldtext">Task:</span> ${todo.task}<br /><span id="boldtext">Completed:</span> ${doneOrNot}<br />--------------------<br />`;
+      displayContent += `<span id="boldtext">Task:</span> ${todo.task}<br /><span id="boldtext">Completed:</span> ${doneOrNot}<span style="margin-left: 40px"><button id="complete-btn" style="font-size: 0.6em">Complete</button></span><br />--------------------<br />`; // ! note - fix the complete button
     }
 
     displayArea.innerHTML = displayContent;
@@ -34,8 +34,16 @@ function setupEventListeners(): void {
 
     let newTask: string = taskInput.value; // ! 1st fix!
 
-    if (currentTasks + 1 > 10) {
+    if (newTask === '') {
+      alert('Please enter a task');
+      return;
+    }
+
+    currentTasks += 1;
+
+    if (currentTasks > 10) {
       alert('TASK LIMIT REACHED');
+      currentTasks -= 1;
       return;
     }
 
@@ -47,8 +55,5 @@ function setupEventListeners(): void {
     displayTasks(todos);
 
     taskInput.value = '';
-
-    currentTasks += 1;
-    console.log(currentTasks);
   });
 }
